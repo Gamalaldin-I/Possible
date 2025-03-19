@@ -43,9 +43,28 @@ The app provides two paths: **Parents** and **Specialists**.
 ## 📸 Screenshots
 Add screenshots of your app here:
 
-| Drawing Section | Reading Section | Mathematics Section |
+| Drawing Section | Tracing Section | Mathematics Section |
 |-----------------|-----------------|---------------------|
-| ![Drawing](./PicsForRepo/drawing.png) | ![Reading](./PicsForRepo/read.png) | ![Math](./PicsForRepo/Arithmetic.png) |
+| ![Drawing](./PicsForRepo/drawing.jpg) | ![Reading](./PicsForRepo/tracing.jpg) | ![Math](./PicsForRepo/Arithmetic.jpg) |
+
+| Read Section | Reading Result Section | Select Sentence Section |
+|-----------------|-----------------|---------------------|
+| ![Drawing](./PicsForRepo/read.jpg) | ![Reading](./PicsForRepo/readingresult.jpg) | ![Math](./PicsForRepo/textToRead.jpg) |
+
+| Setting test | Select Children | Confirm Sending |
+|-----------------|-----------------|---------------------|
+| ![Drawing](./PicsForRepo/setExam1.jpg) | ![Reading](./PicsForRepo/selectChildren.jpg) | ![Math](./PicsForRepo/setExam.jpg) |
+
+
+
+| Children Section | Tests Section | ToDo Section |
+|-----------------|-----------------|---------------------|
+| ![Drawing](./PicsForRepo/ChildrenTests.jpg) | ![Reading](./PicsForRepo/tests1.jpg) | ![Math](./PicsForRepo/toDo.jpg) |
+
+| Child profile | Child report Section | Solved tests | Setting |
+|-----------------|-----------------|---------------------|---------------------|
+| ![Drawing](./PicsForRepo/childProf.jpg) | ![Reading](./PicsForRepo/rate1.jpg) | ![Math](./PicsForRepo/solvedTests.jpg) | ![Math](./PicsForRepo/profileMange.jpg) |
+
 
 ---
 
