@@ -52,9 +52,9 @@ Add screenshots of your app here:
 |-----------------|-----------------|---------------------|
 | ![Drawing](./PicsForRepo/read.jpg) | ![Reading](./PicsForRepo/readingresult.jpg) | ![Math](./PicsForRepo/textToRead.jpg) |
 
-| Setting test | Select Children | Confirm Sending |
-|-----------------|-----------------|---------------------|
-| ![Drawing](./PicsForRepo/setExam1.jpg) | ![Reading](./PicsForRepo/selectChildren.jpg) | ![Math](./PicsForRepo/setExam.jpg) |
+| Setting test | Select children| Confirm sending | Test result |
+|-----------------|-----------------|---------------------|---------------------|
+| ![Drawing](./PicsForRepo/setExam1.jpg) | ![Reading](./PicsForRepo/selectChildren.jpg) | ![Math](./PicsForRepo/setExam.jpg) | ![Math](./PicsForRepo/testRes.jpg)
 
 
 
@@ -64,7 +64,8 @@ Add screenshots of your app here:
 
 | Child profile | Child report Section | Solved tests | Setting |
 |-----------------|-----------------|---------------------|---------------------|
-| ![Drawing](./PicsForRepo/childProf.jpg) | ![Reading](./PicsForRepo/rate1.jpg) | ![Math](./PicsForRepo/solvedTests.jpg) | ![Math](./PicsForRepo/profileMange.jpg) |
+| ![Drawing](./PicsForRepo/childProf.jpg) | ![Reading](./PicsForRepo/rate1.jpg) | ![Math](./PicsForRepo/solvedTests.jpg) | ![Math](./PicsForRepo/profileMange.jpg)
+|
 
 
 ---
