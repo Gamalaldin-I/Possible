@@ -1,6 +1,6 @@
 # Possible - Learning App for Children with Learning Difficulties
 
-![Logo](.PicsForRepo/read)
+![Logo](./PicsForRepo/brain.png)
 
 ## 📱 About The App
 **Possible** is an Android application designed to help children who have difficulties in learning, such as:
