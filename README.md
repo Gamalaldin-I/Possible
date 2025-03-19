@@ -35,8 +35,9 @@ The app provides two paths: **Parents** and **Specialists**.
 - **Android Studio (Jellyfish - SDK 35)**
 - **Retrofit (Networking)**
 - **Room (Local Database)**
-- **TensorFlow Lite (AI Model Prediction)**
+- **Flask Api (Local Api) (AI Model Prediction)**
 - **Speech-to-Text Recognition (Reading Practice)**
+- **Canvas (Tracing Letters and Numbers)**
 
 ---
 
