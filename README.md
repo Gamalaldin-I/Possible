@@ -45,7 +45,7 @@ Add screenshots of your app here:
 
 | Drawing Section | Reading Section | Mathematics Section |
 |-----------------|-----------------|---------------------|
-| ![Drawing](./screenshots/drawing_section.png) | ![Reading](./screenshots/reading_section.png) | ![Math](./screenshots/math_section.png) |
+| ![Drawing](./PicsForRepo/drawing.png) | ![Reading](./PicsForRepo/read.png) | ![Math](./PicsForRepo/Arthmetic.png) |
 
 ---
 
