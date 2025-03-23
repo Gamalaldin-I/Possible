@@ -60,13 +60,13 @@ class ChildrenViewModel :ViewModel(){
         }
 
 
-     fun getUserChildrenFromApi(onStart: () -> Unit, context: Context,db:LocalRepoImp,pref: SharedPref, onFinish: () -> Unit){
+     @SuppressLint("SuspiciousIndentation")
+     fun getUserChildrenFromApi(onStart: () -> Unit, context: Context, db:LocalRepoImp, pref: SharedPref, onFinish: () -> Unit){
          if(!InterNetHelper.isInternetAvailable(context)){
              Toast.makeText(context, "Check your internet connection", Toast.LENGTH_SHORT).show()
              return
          }
          onStart()
-         deleteAllChildren(db)
          viewModelScope.launch(Dispatchers.IO){
             try {
 

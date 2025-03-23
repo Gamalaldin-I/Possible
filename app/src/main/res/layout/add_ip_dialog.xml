@@ -15,6 +15,9 @@
         android:hint="Local server IP"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:hintTextColor="@color/cal"
+        app:boxStrokeColor="@color/cal"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints">
@@ -24,8 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_margin="10dp"
-            android:background="@drawable/input_field"
             android:drawablePadding="10dp"
+            android:textColorHint="@color/cal"
+            android:textColor="@color/white"
             android:inputType="text"
             android:padding="10dp"
             android:textSize="20sp" />

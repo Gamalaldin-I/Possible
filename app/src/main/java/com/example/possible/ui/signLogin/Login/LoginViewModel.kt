@@ -1,7 +1,6 @@
 package com.example.possible.ui.signLogin.Login
 
 import android.content.Context
-import android.content.Intent
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -127,7 +126,6 @@ class LoginViewModel : ViewModel() {
                     val registerResponse = response.body()!!
                     withContext(Dispatchers.Main) {
                     Toast.makeText(context, "✅Info Updated!", Toast.LENGTH_SHORT).show()}
-                    val data =registerResponse
                     val pref = SharedPref(context)
                     val name =registerResponse.userName
                     val image =registerResponse.image
@@ -141,9 +139,9 @@ class LoginViewModel : ViewModel() {
                         name,
                         email,
                         password,
-                        data.expiration,
-                        data.token,
-                        data.userId,
+                        registerResponse.expiration,
+                        registerResponse.token,
+                        registerResponse.userId,
                         role
                     )
                     delay(1000)

@@ -114,7 +114,7 @@ class ChildrenAdapter(private var data: ArrayList<Child>, private val listener: 
         // Load the image using Glide
         Glide.with(holder.itemView.context)
             .load((child.imageUri).toUri())
-            .placeholder(R.drawable.go)
+            .placeholder(R.color.white)
             .error(R.drawable.error_signal)
             .into(holder.binding.profileImage)
     }
