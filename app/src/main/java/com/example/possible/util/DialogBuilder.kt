@@ -1,6 +1,8 @@
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
@@ -57,6 +59,22 @@ object DialogBuilder {
         btn.text=desision
         btn.setOnClickListener {
             errorDialog.dismiss()
+        }
+        errorDialog.show()
+    }
+    @SuppressLint("SetTextI18n")
+    fun showInternetConnectionDialog(context: Context,onEnd: () -> Unit){
+        val errorDialog = Dialog(context)
+        errorDialog.setContentView(R.layout.error_dialog)
+        errorDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        errorDialog.setCancelable(false)
+        val btn = errorDialog.findViewById<AppCompatButton>(R.id.dialogTryAgainBtn)
+        val message = errorDialog.findViewById<TextView>(R.id.message)
+        message.text="No Internet Connection"
+        btn.text="OK"
+        btn.setOnClickListener {
+            errorDialog.dismiss()
+            onEnd()
         }
         errorDialog.show()
     }

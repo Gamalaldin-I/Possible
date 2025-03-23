@@ -82,7 +82,7 @@ class ChildrenAdapter(private var data: ArrayList<Child>, private val listener: 
         val child = data[position]
 
         // Set the name text
-        holder.binding.name.text = child.name
+        holder.binding.name.text =child.name
 
 
         val toDoTests = child.childTests.size - child.childSolvedTests.size

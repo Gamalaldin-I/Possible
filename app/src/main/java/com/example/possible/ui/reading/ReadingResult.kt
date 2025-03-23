@@ -6,27 +6,29 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import com.example.possible.databinding.ActivityReadingResultBinding
+import com.example.possible.model.Child
+import com.example.possible.repo.local.SharedPref
 import com.example.possible.repo.local.database.LocalRepoImp
-import com.example.possible.util.helper.ChildTraker
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ReadingResult : AppCompatActivity() {
     private lateinit var binding: ActivityReadingResultBinding
     private var counter=0
     private var numberOfWords=0
     private lateinit var db: LocalRepoImp
+    private lateinit var child: Child
+    private lateinit var pref: SharedPref
+    private lateinit var viewModeller:ReadingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         db = LocalRepoImp(this)
+        pref = SharedPref(this)
+        viewModeller = ViewModelProvider(this)[ReadingViewModel::class.java]
        binding = ActivityReadingResultBinding.inflate(layoutInflater)
         //get the result of the reading
         val actualText = intent.getStringExtra("actualText")!!
@@ -96,9 +98,9 @@ class ReadingResult : AppCompatActivity() {
         binding.textOfResult.text=spannableString
         }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        updateReadingRate()
+    override fun onResume() {
+        super.onResume()
+        viewModeller.updateReadingRate(this,pref,counter,numberOfWords,db)
     }
     private fun areWordsSimilar(word1: String, word2: String): Boolean {
         val threshold = 1  // لو الفرق حرف واحد أو أقل، هيرجع true
@@ -127,21 +129,5 @@ class ReadingResult : AppCompatActivity() {
     }
 
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun updateReadingRate() {
-        ChildTraker.setReadingRate(counter.toFloat(),numberOfWords.toFloat())
-        val newRate = ChildTraker.getReadingRate()
-        val id = ChildTraker.getChildId()
-        GlobalScope.launch {
-            db.updateReadingRate(id,newRate)
-            val readingDays = db.getChildById(id).readingDays
-            val latestSelecting = db.getChildById(id).latestReadingDay
-            if(ChildTraker.isAnotherDay(latestSelecting)){
-                //update the reading days ++
-                db.updateReadingDays(id,readingDays+1)
-                //update the latest reading day
-                db.updateLatestReadingDay(id,ChildTraker.getCurrentDate())
-            }
-        }
-    }
+
 }

@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View.GONE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -32,11 +33,10 @@ class AddChildActivity : AppCompatActivity() {
     private var age = 1
     private var imageUri: Uri? = null
     private var difficulty = ""
-    private var disease = ""
     private var readingRate = 0
     private var writingRate = 0
-    private var latestReadingDay = ""
-    private var latestWritingDay = ""
+    private var latestReadingDay: String? = null
+    private var latestWritingDay : String? = null
     private var readingDays = 0
     private var writingDays = 0
     private var dateOfCreation = ""
@@ -56,10 +56,12 @@ class AddChildActivity : AppCompatActivity() {
         binding = ActivityAddChildBinding.inflate(layoutInflater)
         checkAndRequestPermissions()
         viewModel = ViewModelProvider(this)[AddChildViewModel::class.java]
-        binding.difficultyLL.visibility = android.view.View.GONE
         db = LocalRepoImp(this)
         pref = SharedPref(this)
         setContentView(binding.root)
+        if(pref.getRole()=="Specialist"){
+            binding.doneBtn.visibility=GONE
+        }
         mode = intent.getStringExtra("mode")!!
         if (mode == EDIT_MODE){
             childId = intent.getIntExtra("childId", 1)
@@ -85,7 +87,6 @@ class AddChildActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        binding.difficultyLL.visibility = android.view.View.GONE
         setupNumberPicker()
         setupGenderPicker()
         binding.doneBtn.setOnClickListener {
@@ -181,7 +182,7 @@ class AddChildActivity : AppCompatActivity() {
     }
 
     private fun validateAndSaveChild() {
-        if (binding.name.text.toString().isEmpty()|| imageUri == null) {
+        if (binding.name.text.toString().isEmpty()|| imageUri == null|| binding.difficultyEt.text.toString().isEmpty()) {
             if (imageUri == null) {
                 Toast.makeText(this, "Please select a profile picture", Toast.LENGTH_SHORT).show()
             }
@@ -189,12 +190,14 @@ class AddChildActivity : AppCompatActivity() {
             binding.name.error = "Please enter a name"
             Toast.makeText(this, "Please enter a name", Toast.LENGTH_SHORT).show()
             }
+            if (binding.difficultyEt.text.toString().isEmpty()){
+                binding.difficultyEt.error = "Please enter a difficulty"
+                Toast.makeText(this, "Please enter a difficulty", Toast.LENGTH_SHORT).show()
+            }
         }
         else {
             name = binding.name.text.toString()
-            disease = binding.diseasesEt.text.toString()
-            Log.d("GenderValue", "$gender 11")
-
+            difficulty = binding.difficultyEt.text.toString()
             viewModel.addChild(
                 onStart = {onStarting()},
                 name,
@@ -203,7 +206,6 @@ class AddChildActivity : AppCompatActivity() {
                 imageUri.toString(),
                 pref.getProfileDetails().name,
                 difficulty,
-                disease,
                 pref,
                  this,
                  db,
@@ -213,7 +215,7 @@ class AddChildActivity : AppCompatActivity() {
         }
     }
     private fun validateAndUpdateChild() {
-        if (binding.name.text.toString().isEmpty()|| imageUri == null) {
+        if (binding.name.text.toString().isEmpty()|| imageUri == null|| binding.difficultyEt.text.toString().isEmpty()) {
             if (imageUri == null) {
                 Toast.makeText(this, "Please select a profile picture", Toast.LENGTH_SHORT).show()
             }
@@ -221,10 +223,13 @@ class AddChildActivity : AppCompatActivity() {
                 binding.name.error = "Please enter a name"
                 Toast.makeText(this, "Please enter a name", Toast.LENGTH_SHORT).show()
             }
+            if (binding.difficultyEt.text.toString().isEmpty()){
+                binding.difficultyEt.error = "Please enter a difficulty"
+                Toast.makeText(this, "Please enter a difficulty", Toast.LENGTH_SHORT).show()
+            }
         }
         else {
             name = binding.name.text.toString()
-            disease = binding.diseasesEt.text.toString()
             difficulty = binding.difficultyEt.text.toString()
             updateChild()
              }
@@ -237,7 +242,6 @@ class AddChildActivity : AppCompatActivity() {
             age,
             imageUri.toString(),
             gender,
-            disease,
             difficulty,
             db,
             this,
@@ -255,8 +259,8 @@ class AddChildActivity : AppCompatActivity() {
                     name = child!!.name
                     imageUri = Uri.parse(child!!.imageUri)
                     age = child!!.age
-                    disease = child!!.disease
-                    difficulty = child!!.difficulty
+                    //disease = ChildDataFormatter.getTheDifficultyAndDisease(child!!.name).second
+                    //difficulty = ChildDataFormatter.getTheDifficultyAndDisease(child!!.name).first
                     readingRate = child!!.readingRate
                     writingRate = child!!.writingRate
                     readingDays = child!!.readingDays
@@ -265,7 +269,6 @@ class AddChildActivity : AppCompatActivity() {
                     latestWritingDay = child!!.latestWritingDay
                     dateOfCreation = child!!.date
                     ///////////SET_VIEW////////////////
-                    binding.difficultyLL.visibility = android.view.View.VISIBLE
                     binding.report.visibility = android.view.View.VISIBLE
                     binding.doneBtn.text="Update"
                     binding.name.setText(child!!.name)
@@ -277,7 +280,6 @@ class AddChildActivity : AppCompatActivity() {
                         binding.femaleRB.isChecked = true
                     } else {
                         binding.maleRB.isChecked = true }
-                    binding.diseasesEt.setText(child!!.disease)
                     binding.difficultyEt.setText(child!!.difficulty)
                 }
                 }
@@ -287,7 +289,6 @@ class AddChildActivity : AppCompatActivity() {
 
 
     private fun afterAddOrEdit(){
-        Toast.makeText(this, "Done successfully", Toast.LENGTH_SHORT).show()
         binding.loadingView.visibility = android.view.View.GONE
         binding.doneBtn.isEnabled = true
         finish()
@@ -298,6 +299,8 @@ class AddChildActivity : AppCompatActivity() {
         binding.loadingView.visibility = android.view.View.VISIBLE
         binding.doneBtn.isEnabled = false
     }
+
+
 
 
 

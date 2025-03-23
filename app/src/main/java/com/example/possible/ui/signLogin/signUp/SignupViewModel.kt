@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.possible.databinding.ActivitySignupBinding
 import com.example.possible.repo.local.SharedPref
 import com.example.possible.repo.remote.RetrofitBuilder
+import com.example.possible.util.LogoutHandler
 import com.example.possible.util.helper.dataManager.AppDataManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,7 +72,8 @@ class SignupViewModel : ViewModel() {
                              userId,
                              role
                          )
-                             //saveData(SharedPref(context),registerResponse.image,registerResponse.userName,registerResponse.email,registerResponse.password)
+
+                         //saveData(SharedPref(context),registerResponse.image,registerResponse.userName,registerResponse.email,registerResponse.password)
                      } else {
                          val errorBody = response.errorBody()?.string()
                          errorBody?.let {

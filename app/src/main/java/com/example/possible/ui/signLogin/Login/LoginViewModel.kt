@@ -13,6 +13,7 @@ import com.example.possible.databinding.ActivityLoginBinding
 import com.example.possible.model.LoginBody
 import com.example.possible.repo.local.SharedPref
 import com.example.possible.repo.remote.RetrofitBuilder
+import com.example.possible.util.LogoutHandler
 import com.example.possible.util.helper.dataManager.AppDataManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -29,6 +30,7 @@ class LoginViewModel : ViewModel() {
         context: Context,
         onLoginSuccess: () -> Unit
     ) {
+        val p =SharedPref(context)
         viewModelScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main){
                 bind.loadingView.visibility = VISIBLE
@@ -48,6 +50,7 @@ class LoginViewModel : ViewModel() {
                         val userId = registerResponse.userId
                         val expiration = registerResponse.expiration
                         val role = registerResponse.roles[0]
+                        p.setToken(token)
                         AppDataManager.saveProfileData(
                             context,
                             SharedPref(context),
@@ -63,6 +66,7 @@ class LoginViewModel : ViewModel() {
                         delay(1000)
                         Toast.makeText(context, "✅ Login Success!", Toast.LENGTH_SHORT).show()
                         onLoginSuccess()
+                        LogoutHandler.isLoggingOUt=false
 
                     } else {
                         val errorBody = response.errorBody()?.string()

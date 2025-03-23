@@ -55,7 +55,8 @@ object ChildTraker {
     }
 
 
-    fun isAnotherDay(latestData: String): Boolean {
+    fun isAnotherDay(latestData: String?): Boolean {
+        if (latestData == null) return true
         return latestData != getCurrentDate()
     }
      fun getCurrentDate(): String {

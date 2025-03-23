@@ -1,5 +1,6 @@
 package com.example.possible.ui.profile.children
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -65,10 +66,12 @@ class ChildrenViewModel :ViewModel(){
              return
          }
          onStart()
-        viewModelScope.launch(Dispatchers.IO){
-          try {
+         deleteAllChildren(db)
+         viewModelScope.launch(Dispatchers.IO){
+            try {
 
             val token = "Bearer ${pref.getToken()}"
+                Log.i("TOkENII",token)
             val response = RetrofitBuilder.getUserChildrenApiService.getUserChildren(token)
             if (response.isSuccessful) {
                 storeUserChildrenIntoRoom(response.body()!!,db,context ,onFinish)
@@ -87,7 +90,6 @@ class ChildrenViewModel :ViewModel(){
             Toast.makeText(context, "Check your internet connection", Toast.LENGTH_SHORT).show()
             return
         }
-        deleteAllChildren(db)
         onStart()
         viewModelScope.launch(Dispatchers.IO){
             try {val token = "Bearer ${pref.getToken()}"
@@ -108,15 +110,19 @@ class ChildrenViewModel :ViewModel(){
                 val age =child.age
                 val name = child.name
                 val id = child.id
+                val diff = child.difficult
+                val readingRate = child.readingRate
+                val writingRate = child.writingRate
+                val lastReadingTime = child.lastReadingTime
+                val lastWritingTime = child.lastWritingTime
+                val readingDays = child.readingDays
+                val writingDays = child.writingDays
                 val imageUri = AppDataManager.downloadAndSaveChildImage(context, child.image,"${child.name}_${child.id}")
                 val localChild = Child(
                     id, name, age, imageUri.toString(),child.gender,
-                    "","",
-                    0,0,
-                    0,0,
-                    "","",
-                    returnDate()
-                ,emptyList(),emptyList())
+                    diff,readingRate,writingRate,readingDays,writingDays,lastReadingTime,lastWritingTime,returnDate(),
+                    emptyList(),emptyList()
+                )
                 db.insertChild(localChild)
             }
             getChildren(db)
@@ -128,24 +134,28 @@ class ChildrenViewModel :ViewModel(){
 
 
 
-     private fun storeUserChildrenIntoRoom(children: List<RemoteChild>, db:LocalRepoImp, context: Context,onFinish: () -> Unit){
+     @SuppressLint("SuspiciousIndentation")
+     private fun storeUserChildrenIntoRoom(children: List<RemoteChild>, db:LocalRepoImp, context: Context, onFinish: () -> Unit){
         viewModelScope.launch(Dispatchers.IO) {
             for (child in children) {
                 val age =child.age
                 val name = child.name
                 val id = child.id
+                val readingRate = child.readingRate
+                val writingRate = child.writingRate
+                val lastReadingTime = child.lastReadingTime
+                val lastWritingTime = child.lastWritingTime
+                val readingDays = child.readingDays
+                val writingDays = child.writingDays
+                val diff = child.difficult
                 val imageUri = AppDataManager.downloadAndSaveChildImage(context, child.image,"${child.name}_${child.id}")
                 val localChild = Child(
                     id, name, age, imageUri.toString(),child.gender,
-                    "","",
-                    0,0,
-                    0,0,
-                    "","",
-                    returnDate(),
+                    diff,readingRate,writingRate,readingDays,writingDays,lastReadingTime,lastWritingTime,returnDate(),
                     emptyList(),emptyList())
-                db.insertChild(localChild)
+                    db.insertChild(localChild)
             }
-        getChildren(db)
+             getChildren(db)
             withContext(Dispatchers.Main) {
                 onFinish()
             }

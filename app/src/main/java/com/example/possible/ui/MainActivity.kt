@@ -18,6 +18,8 @@ import com.example.possible.ui.math.MainMathActivity
 import com.example.possible.ui.profile.ProfileActivity
 import com.example.possible.ui.profile.children.addChild.AddChildActivity
 import com.example.possible.ui.reading.ReadingMainActivity
+import com.example.possible.ui.signLogin.Login.LoginActivity
+import com.example.possible.util.LogoutHandler
 import com.example.possible.util.helper.ChildTraker
 import com.example.possible.util.helper.dataManager.AppDataManager
 import kotlinx.coroutines.Dispatchers
@@ -132,6 +134,7 @@ class MainActivity : AppCompatActivity() {
         AppDataManager.viewProfileImage(binding.profileIV,pref,this)
         binding.userNameTV.text=AppDataManager.getProfileDetails(pref).name
         Log.d("ImageProfile"," ${AppDataManager.getProfileDetails(pref).imagePath} from main activity")
+        isFromLogout()
     }
     @SuppressLint("SetTextI18n")
     private fun assignValuesToChildTracker(childId: Int) {
@@ -143,6 +146,25 @@ class MainActivity : AppCompatActivity() {
             }
             ChildTraker.setReadingRate(child.readingRate)
             ChildTraker.setWritingRate(child.writingRate)
+        }
+    }
+
+    private fun isFromLogout(){
+             if(LogoutHandler.isLoggingOUt){
+            clearAll()
+                 LogoutHandler.clearAllLoggedData(this)
+            finish()
+             }
+
+        }
+
+
+    private fun clearAll() {
+        val isDeleted = deleteDatabase("child_database")
+        if (isDeleted) {
+            Log.d("Database", "Database deleted successfully")
+        } else {
+            Log.d("Database", "Failed to delete database")
         }
     }
 }

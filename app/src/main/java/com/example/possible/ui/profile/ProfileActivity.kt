@@ -14,10 +14,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.possible.databinding.ActivityProfileBinding
 import com.example.possible.repo.local.SharedPref
+import com.example.possible.ui.MainActivity
 import com.example.possible.ui.profile.children.addChild.AddChildActivity
 import com.example.possible.ui.profile.children.Children
 import com.example.possible.ui.profile.children.testsForChildren.ChildrenTests
 import com.example.possible.ui.profile.profileManage.EditProfileActivity
+import com.example.possible.ui.specialist.SpecialistMainActivity
+import com.example.possible.util.LogoutHandler
 import com.example.possible.util.helper.dataManager.AppDataManager
 import kotlin.system.exitProcess
 
@@ -113,7 +116,8 @@ class ProfileActivity : AppCompatActivity() {
 
     }
     private fun logout() {
-        clearAppDataAndRestart(this)
+        //setLogout
+        LogoutHandler.isLoggingOUt=true
         Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
         finish()
     }
@@ -126,8 +130,8 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ServiceCast")
-    fun clearAppDataAndRestart(context: Context) {
+    //@SuppressLint("ServiceCast")
+   /* fun clearAppDataAndRestart(context: Context) {
         try {
             // Clear app data
             val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
@@ -158,7 +162,7 @@ class ProfileActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
+    }*/
 
 
 

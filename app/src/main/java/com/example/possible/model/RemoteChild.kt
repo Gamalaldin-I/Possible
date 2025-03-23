@@ -5,7 +5,16 @@ data class RemoteChild(
     val name: String,
     val age: Int,
     val gender: Int,
-    val parentId: String,
+    val readingRate: Int,
+    val writingRate: Int,
+    val lastReadingTime: String,
+    val lastWritingTime: String,
+    val readingDays: Int,
+    val writingDays: Int,
+    val difficult: String,
+    val parentUserName: String,
     val image: String
 )
+
+
 

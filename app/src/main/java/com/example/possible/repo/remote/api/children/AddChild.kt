@@ -19,6 +19,8 @@ interface AddChild {
         @Part("Age") age: RequestBody,
         @Part("Gender") gender: RequestBody,
         @Part image: MultipartBody.Part,
-        @Part("ParentUserName") parentUserName: RequestBody
+        @Part("ParentUserName") parentUserName: RequestBody,
+        @Part("Difficult")diff:RequestBody
+
     ): Response<AddChildResponse>
 }

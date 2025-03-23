@@ -10,6 +10,7 @@ import com.example.possible.repo.remote.api.children.DeleteChildApiService
 import com.example.possible.repo.remote.api.children.GetAllChildren
 import com.example.possible.repo.remote.api.children.GetUserChildren
 import com.example.possible.repo.remote.api.children.UpdateChild
+import com.example.possible.repo.remote.api.children.UpdateReportInf
 import com.example.possible.repo.remote.api.specialist.GetChildTests
 import com.example.possible.repo.remote.api.specialist.SendExamOnlineService
 import com.example.possible.repo.remote.response.lettersNumbers.LetterApiResponse
@@ -114,9 +115,14 @@ object RetrofitBuilder {
     val getChildTests: GetChildTests by lazy {
         apiRetrofit.create(GetChildTests::class.java)
     }
+
+    val updatedValue :UpdateReportInf by lazy {
+        apiRetrofit.create(UpdateReportInf::class.java)
+    }
     fun setIp(ip: String) {
         LOCALHOST_IP = ip
         LETTERS_BASE_URL = "http://$LOCALHOST_IP:5000/"
         NUMBERS_BASE_URL = "http://$LOCALHOST_IP:3000/"
     }
+
 }

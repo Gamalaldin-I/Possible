@@ -37,14 +37,13 @@ class AddChildViewModel : ViewModel() {
         imageUriString: String,
         parentUserName: String,
         difficulty: String,
-        disease: String,
         pref: SharedPref,
         context: Context,
         db: LocalRepoImp,
         onEnd: () -> Unit
     ) {
         addChildRemoteAPI(
-            onStart,name, age, gender, imageUriString, parentUserName, pref, context, disease, difficulty, db,onEnd
+            onStart,name, age, gender, imageUriString, parentUserName, pref, context, difficulty, db,onEnd
         )
     }
 
@@ -57,7 +56,6 @@ class AddChildViewModel : ViewModel() {
         parentUserName: String,
         pref: SharedPref,
         context: Context,
-        disease: String,
         difficulty: String,
         db: LocalRepoImp,
         onEnd: () -> Unit
@@ -70,11 +68,12 @@ class AddChildViewModel : ViewModel() {
         val clientFile: File = DataFormater.uriToFile(context, clientImage)!!
         val requestFile = clientFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("ClientFile", clientFile.name, requestFile)
-
         val requestName = name.toRequestBody("text/plain".toMediaTypeOrNull())
         val requestAge = age.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         val requestGender = gender.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         val requestParentUserName = parentUserName.toRequestBody("text/plain".toMediaTypeOrNull())
+        val requestedDiff = difficulty.toRequestBody("text/plain".toMediaTypeOrNull())
+
         val token = "Bearer ${pref.getProfileDetails().token}"
         Log.d("GenderValue", gender.toString())
 
@@ -86,7 +85,8 @@ class AddChildViewModel : ViewModel() {
                 requestAge,
                 requestGender,
                 imagePart,
-                requestParentUserName
+                requestParentUserName,
+                requestedDiff
             )
             if (response.isSuccessful) {
                 val responseBody = response.body()!!
@@ -97,7 +97,7 @@ class AddChildViewModel : ViewModel() {
 
 
                 val uri = AppDataManager.downloadAndSaveChildImage(context, imageUrl, imageName)
-                addTheChildLocalDB(name, id, age, uri.toString(), gender, disease, difficulty, db, onEnd)
+                addTheChildLocalDB(name, id, age, uri.toString(), gender, difficulty, db, onEnd)
 
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show()
@@ -105,6 +105,7 @@ class AddChildViewModel : ViewModel() {
             } else {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Error Occurred, try again!", Toast.LENGTH_SHORT).show()
+                    onEnd()
                 }
             }
         }
@@ -116,13 +117,12 @@ class AddChildViewModel : ViewModel() {
         age: Int,
         imageUri: String,
         genderInt: Int,
-        disease: String,
         difficulty: String,
         db: LocalRepoImp,
         onEnd: () -> Unit
     ) {
         val child = Child(
-            id, name, age, imageUri, genderInt, disease, difficulty,
+            id, name, age, imageUri, genderInt, difficulty,
             0, 0, 0, 0, "", "", returnDate(), emptyList(), emptyList()
         )
         db.insertChild(child)
@@ -136,79 +136,88 @@ class AddChildViewModel : ViewModel() {
         val currentDate = LocalDateTime.now()
         return currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
     }
+    private fun time(): String{
+        val currentTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val formattedTime = currentTime.format(formatter)
+        return formattedTime
+    }
 
-    fun updateChild(onStart: () -> Unit,id: Int, name: String, age: Int, imageUri: String, gender: Int,dis:String,diff:String,db:LocalRepoImp,context: Context,pref: SharedPref,onEnd: () -> Unit){
-           if(!InterNetHelper.isInternetAvailable(context)){
-               Toast.makeText(context, "Check your internet connection, try again!", Toast.LENGTH_SHORT).show()
-               return
-           }
-           viewModelScope.launch(Dispatchers.IO){
-               try {
+    fun updateChild(onStart: () -> Unit,id: Int, name: String, age: Int, imageUri: String, gender: Int,diff:String,db:LocalRepoImp,context: Context,pref: SharedPref,onEnd: () -> Unit){
+        if(!InterNetHelper.isInternetAvailable(context)){
+            Toast.makeText(context, "Check your internet connection, try again!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO){
+            try {
 
-                   withContext(Dispatchers.Main){
-                Toast.makeText(context, "Updating...", Toast.LENGTH_SHORT).show()
-                onStart()
-            }
-            val oChd = db.getChildById(id)
-            val parentName = pref.getProfileDetails().name
-            val clientFile: File = DataFormater.uriToFile(context, imageUri)!!
-            val requestFile = clientFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val imagePart = MultipartBody.Part.createFormData("ClientFile", clientFile.name, requestFile)
+                withContext(Dispatchers.Main){
+                    Toast.makeText(context, "Updating...", Toast.LENGTH_SHORT).show()
+                    onStart()
+                }
+                val oChd = db.getChildById(id)
+                val parentName = pref.getProfileDetails().name
+                val clientFile: File = DataFormater.uriToFile(context, imageUri)!!
+                val requestFile = clientFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val imagePart = MultipartBody.Part.createFormData("ClientFile", clientFile.name, requestFile)
 
-            val requestName = name.toRequestBody("text/plain".toMediaTypeOrNull())
-            val requestAge = age.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-            val requestGender = gender.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-            val requestParentUserName = parentName.toRequestBody("text/plain".toMediaTypeOrNull())
-            val token = "Bearer ${pref.getProfileDetails().token}"
+                val requestName = name.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestAge = age.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestGender = gender.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestParentUserName = parentName.toRequestBody("text/plain".toMediaTypeOrNull())
+                val requestedDiff = diff.toRequestBody("text/plain".toMediaTypeOrNull())
+                val token = "Bearer ${pref.getProfileDetails().token}"
 
-            val response = RetrofitBuilder.updateChildApiService.updateChild(id,
-                token,
-                requestName,
-                requestAge,
-                requestGender,
-                imagePart,
-                requestParentUserName
-            )
-            if (response.isSuccessful){
-                val resBody = response.body()!!
-                val imageName = "${resBody.name}_${resBody.id}"
-                val imageUrl = resBody.image
-                val newImageUri = AppDataManager.downloadAndSaveChildImage(context, imageUrl, imageName).toString()
-                val newChild = Child(
-                    resBody.id,
-                    resBody.name,
-                    resBody.age,
-                    newImageUri,
-                    resBody.gender,
-                    dis,
-                    diff,
-                    oChd.readingRate,
-                    oChd.writingRate,
-                    oChd.readingDays,
-                    oChd.writingDays,
-                    oChd.latestReadingDay,
-                    oChd.latestWritingDay,
-                    oChd.date,
-                    oChd.childTests,
-                    oChd.childSolvedTests
+                val response = RetrofitBuilder.updateChildApiService.updateChild(id,
+                    token,
+                    requestName,
+                    requestAge,
+                    requestGender,
+                    imagePart,
+                    requestParentUserName,
+                    requestedDiff
                 )
-                db.updateChild(newChild)
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
-                    onEnd()
+                if (response.isSuccessful){
+                    val resBody = response.body()!!
+                    val imageName = "${resBody.name}_${time()}"
+                    val imageUrl = resBody.image
+                    val newImageUri = AppDataManager.downloadAndSaveChildImage(context, imageUrl, imageName).toString()
+                    val newChild = Child(
+                        resBody.id,
+                        resBody.name,
+                        resBody.age,
+                        newImageUri,
+                        resBody.gender,
+                        diff,
+                        oChd.readingRate,
+                        oChd.writingRate,
+                        oChd.readingDays,
+                        oChd.writingDays,
+                        oChd.latestReadingDay,
+                        oChd.latestWritingDay,
+                        oChd.date,
+                        oChd.childTests,
+                        oChd.childSolvedTests
+                    )
+                    db.updateChild(newChild)
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context, "Updated Successfully", Toast.LENGTH_SHORT).show()
+                        onEnd()
+                    }
                 }
-            }
-            else{
-                withContext(Dispatchers.Main){
-                    Toast.makeText(context, "Error Occurred, try again!", Toast.LENGTH_SHORT).show()
+                else{
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(context, "Error Occurred, try again!", Toast.LENGTH_SHORT).show()
+                    }
                 }
+            } catch (e:Exception){
+                Log.d("UpdateChild", e.message.toString())
+                Toast.makeText(context, "Check your internet connection, try again!", Toast.LENGTH_SHORT).show()
             }
-    } catch (e:Exception){
-        Log.d("UpdateChild", e.message.toString())
-           Toast.makeText(context, "Check your internet connection, try again!", Toast.LENGTH_SHORT).show()
-       }
+        }
     }
-    }
+
+
 
 
 

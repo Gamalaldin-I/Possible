@@ -23,14 +23,14 @@ import kotlinx.coroutines.withContext
 
 class TestsDoneFragment : Fragment() , TestListener{
     private lateinit var binding: FragmentTestsDoneBinding
-     private var id = 0
-     fun newInstance(id:Int):TestsDoneFragment{
-         val args = Bundle()
-         args.putInt("id",id)
-         val fragment = TestsDoneFragment()
-         fragment.arguments = args
-         return fragment
-     }
+    private var id = 0
+    fun newInstance(id:Int):TestsDoneFragment{
+        val args = Bundle()
+        args.putInt("id",id)
+        val fragment = TestsDoneFragment()
+        fragment.arguments = args
+        return fragment
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,7 +44,7 @@ class TestsDoneFragment : Fragment() , TestListener{
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentTestsDoneBinding.inflate(inflater, container, false)
-         id = arguments?.getInt("id")!!
+        id = arguments?.getInt("id")!!
         return binding.root
     }
 
@@ -63,12 +63,12 @@ class TestsDoneFragment : Fragment() , TestListener{
 
                     binding.hint.visibility = View.VISIBLE
                     binding.recyclerView.visibility = View.GONE
-            }
-            else{
+                }
+                else{
                     binding.hint.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
-            setTests(tests)
-        }
+                    setTests(tests)
+                }
             }
 
         }
@@ -102,7 +102,7 @@ class TestsDoneFragment : Fragment() , TestListener{
 
                     db.updateSolvedTests(id, childSolvedTests)
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Moved to toDo", Toast.LENGTH_SHORT).show()
                         getDoneTests(id)
                         binding.recyclerView.adapter!!.notifyItemRemoved(position)
                         binding.recyclerView.adapter!!.notifyItemRangeChanged(position, childSolvedTests.size)

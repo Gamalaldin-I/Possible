@@ -3,10 +3,10 @@ import DialogBuilder
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.possible.databinding.ActivityDrawingBinding
 import com.example.possible.model.Child
@@ -16,17 +16,15 @@ import com.example.possible.repo.local.database.LocalRepoImp
 import com.example.possible.util.helper.ChildTraker
 import com.example.possible.util.helper.dataManager.AppDataManager
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class DrawingActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDrawingBinding
     private lateinit var fragment: DrawingFragment
     private lateinit var pref:SharedPref
     private var child : Child?=null
+    private lateinit var viewModel: DrawingViewModel
     private var index=0
     private var type=""
     private lateinit var db: LocalRepoImp
@@ -37,6 +35,7 @@ class DrawingActivity : AppCompatActivity() {
         enableEdgeToEdge()
         pref=SharedPref(this)
         db = LocalRepoImp(this)
+        viewModel = ViewModelProvider(this)[DrawingViewModel::class.java]
         binding = ActivityDrawingBinding.inflate(layoutInflater)
         //get the data from the previos
         index=intent.extras?.getInt("letterIndex",0)!!
@@ -54,19 +53,7 @@ class DrawingActivity : AppCompatActivity() {
                         binding.celeprationView.visibility= VISIBLE
                         binding.celeprationAnim.playAnimation()
                         binding.doneButton.isEnabled=false
-                        child = db.getChildById(ChildTraker.getChildId())
-                        val latestSelecting = child!!.latestWritingDay
-                        ChildTraker.setWritingRateOfTries(points)
-                        withContext(Dispatchers.Main){
-                        }
-                        //get the new rate and assign it
-                        val newWritingRate = ChildTraker.getWritingRate()
-                        db.updateWritingRate(ChildTraker.getChildId(), newWritingRate)
-
-                        //update the writing days and latest writing day
-                        if (ChildTraker.isAnotherDay(latestSelecting)){
-                            db.updateWritingDays(ChildTraker.getChildId(),child!!.writingDays+1)
-                            db.updateLatestWritingDay(ChildTraker.getChildId(),ChildTraker.getCurrentDate())}
+                        viewModel.updateWritingRate(this@DrawingActivity,pref,points,db,100)
                         solved = true
                     }
                     else{
@@ -149,6 +136,7 @@ class DrawingActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if(!solved){
+            //in the case of not solved
         GlobalScope.launch {
             child = db.getChildById(ChildTraker.getChildId())
             val latestSelecting = child!!.latestWritingDay
@@ -159,7 +147,8 @@ class DrawingActivity : AppCompatActivity() {
                 db.updateWritingDays(ChildTraker.getChildId(), child!!.writingDays + 1)
                 db.updateLatestWritingDay(ChildTraker.getChildId(), ChildTraker.getCurrentDate())
             }
-        }   }
+        }
+        }
     }
 
 

@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import com.example.possible.R
 import com.example.possible.databinding.ActivityReadTextBinding
 import com.example.possible.util.adapter.TextsAdapter
+import com.example.possible.util.helper.InterNetHelper
 import com.example.possible.util.listener.TextListener
 import java.util.Locale
 
@@ -45,6 +46,9 @@ class ReadTextActivity : AppCompatActivity(), TextListener {
     private fun setupUI() {
         setupRecyclerView()
         setupClickListeners()
+        if(!InterNetHelper.isInternetAvailable(this)){
+            DialogBuilder.showInternetConnectionDialog(this) { this.finish() }
+        }
     }
 
     private fun setupRecyclerView() {

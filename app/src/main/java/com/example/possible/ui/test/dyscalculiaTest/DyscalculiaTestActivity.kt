@@ -132,7 +132,7 @@ class DyscalculiaTestActivity : AppCompatActivity() {
             val db = LocalRepoImp(this@DyscalculiaTestActivity)
             val child = db.getChildById(childId)
             val newSolvedTest = SolvedTest(test.name, test.type, q1, q2, q3, q4, result, getCurrentDate())
-             val newList =child.childSolvedTests as MutableList<SolvedTest>
+            val newList =child.childSolvedTests as MutableList<SolvedTest>
             newList.add(newSolvedTest)
             db.updateSolvedTests(childId,newList)
             withContext(Dispatchers.Main) {

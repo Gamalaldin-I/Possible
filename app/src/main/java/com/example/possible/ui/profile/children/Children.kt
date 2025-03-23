@@ -20,6 +20,8 @@ import com.example.possible.repo.local.SharedPref
 import com.example.possible.repo.local.database.LocalRepoImp
 import com.example.possible.ui.MainActivity
 import com.example.possible.ui.profile.children.addChild.AddChildActivity
+import com.example.possible.ui.signLogin.Login.LoginActivity
+import com.example.possible.util.LogoutHandler
 import com.example.possible.util.adapter.ChildrenAdapter
 import com.example.possible.util.listener.ChildListener
 
@@ -78,7 +80,7 @@ class Children : AppCompatActivity(), ChildListener {
                 ,this, db,pref,
                 onFinish = {
                     loadingDialog.dismiss()
-                       pref.setCounter(1)
+                    pref.setCounter(1)
                 }
             )}
             else if (pref.getRole()=="Specialist")
@@ -163,6 +165,7 @@ class Children : AppCompatActivity(), ChildListener {
     override fun onResume() {
         super.onResume()
         viewModel.getChildren(db)
+        isLogout()
     }
 
     override fun onClick(child: Child) {
@@ -204,5 +207,14 @@ class Children : AppCompatActivity(), ChildListener {
             binding.addChild.visibility=View.VISIBLE
         }
     }
+
+    private fun isLogout(){
+        if(LogoutHandler.isLoggingOUt){
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
+
 
 }

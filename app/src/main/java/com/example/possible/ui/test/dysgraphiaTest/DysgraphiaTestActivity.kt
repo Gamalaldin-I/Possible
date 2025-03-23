@@ -234,11 +234,11 @@ class DysgraphiaTestActivity : AppCompatActivity() {
                 onConfirm = {
                     binding.loadingView.visibility = View.VISIBLE
                     GlobalScope.launch {
-                    result = calcTheResult()
+                        result = calcTheResult()
                         withContext(Dispatchers.Main){
                             binding.loadingView.visibility = View.GONE
                         }
-                    makeTheTestSolved(context,test.name,test.type,q1,q2,q3,q4,result)
+                        makeTheTestSolved(context,test.name,test.type,q1,q2,q3,q4,result)
                     }
                 },
                 onCancel = {
@@ -274,26 +274,26 @@ class DysgraphiaTestActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun initForTest(){
-         pref = SharedPref(this)
+        pref = SharedPref(this)
         if(pref.getRole()=="User"){
 
 
 
-        val id = intent.getIntExtra("childId",-1)
-        val testName = intent.getStringExtra("test")?:""
-        if(id == -1){
-            finish()
+            val id = intent.getIntExtra("childId",-1)
+            val testName = intent.getStringExtra("test")?:""
+            if(id == -1){
+                finish()
+            }
+            childId = id
+            getTheTestToViewToTheChild(id,testName)
+            setControllerForUser(this)
         }
-        childId = id
-        getTheTestToViewToTheChild(id,testName)
-        setControllerForUser(this)
-    }
         else{
             testName = intent.getStringExtra("test")?:""
             binding.endSession.text = "Exit"
             binding.endSession.setOnClickListener {
                 finish()
-        }
+            }
             getTest()
 
         }
@@ -319,14 +319,13 @@ class DysgraphiaTestActivity : AppCompatActivity() {
             this,
             "Are you sure to end the session  without correction?","End Session !","Yes","No",
             onConfirm = {
-                    super.onBackPressed()
+                super.onBackPressed()
             },
             onCancel = {
 
             }
         )
-    }
+        }
     }
 
 }
-

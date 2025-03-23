@@ -1,9 +1,9 @@
 package com.example.possible.ui.reading
 
+import DialogBuilder
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -16,13 +16,13 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.example.possible.R
 import com.example.possible.databinding.ActivityReadCustomTextBinding
+import com.example.possible.util.helper.InterNetHelper
 import java.util.Locale
 
 class ReadCustomTextActivity : AppCompatActivity() {
@@ -37,7 +37,9 @@ class ReadCustomTextActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityReadCustomTextBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        if(!InterNetHelper.isInternetAvailable(this)){
+            DialogBuilder.showInternetConnectionDialog(this) { this.finish() }
+        }
         checkPermission()
         setupSpeechRecognizer()
         setupUI()
@@ -46,6 +48,7 @@ class ReadCustomTextActivity : AppCompatActivity() {
     private fun setupUI() {
         binding.inputField.doOnTextChanged { text, _, _, _ ->
             binding.goBtn.setBackgroundResource(if (text.isNullOrEmpty()) R.drawable.is_not_recording else R.drawable.is_recording_bg)
+
         }
 
         binding.goBtn.setOnClickListener { handleGoButtonClick() }

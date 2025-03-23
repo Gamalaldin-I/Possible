@@ -15,9 +15,9 @@ class ReadingFragment : Fragment() {
        args.putInt("rate", rate)
        args.putInt("readingDays", readingDays)
        args.putString("latestDayOfReading", latestDayOfReading)
-        val fragment = ReadingFragment()
-        fragment.arguments = args
-        return fragment
+       val fragment = ReadingFragment()
+       fragment.arguments = args
+       return fragment
    }
 
 
