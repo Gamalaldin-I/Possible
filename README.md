@@ -35,7 +35,8 @@ The app provides two paths: **Parents** and **Specialists**.
 - **Android Studio (Jellyfish - SDK 35)**
 - **Retrofit (Networking)**
 - **Room (Local Database)**
-- **Flask Api (AI Model Prediction)**
+- **Flask API (AI Model Prediction)**
+- **Dot Net API (Account, Children, Tests)**
 - **Speech-to-Text Recognition (Reading Practice)**
 - **Canvas (Tracing Letters and Numbers)**
 
