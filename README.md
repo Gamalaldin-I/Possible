@@ -8,6 +8,9 @@
 - **Dyscalculia** (math difficulty)
 - **Dysgraphia** (writing difficulty)
 
+## 🎥 Demo Video
+[![Demo](https://img.youtube.com/vi/wJhqAW0-qQI/0.jpg)](https://youtu.be/wJhqAW0-qQI)  
+*Click the image above to watch the demo.*
 The app provides two paths: **Parents** and **Specialists**.
 
 ---
