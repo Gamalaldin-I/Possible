@@ -46,31 +46,18 @@ The app provides two paths: **Parents** and **Specialists**.
 ---
 
 ## 📸 Screenshots
-Add screenshots of your app here:
 
-| Drawing Section | Tracing Section | Mathematics Section |
-|-----------------|-----------------|---------------------|
-| ![Drawing](./PicsForRepo/drawing.jpg) | ![Reading](./PicsForRepo/tracing.jpg) | ![Math](./PicsForRepo/Arithmetic.jpg) |
-
-| Read Section | Reading Result Section | Select Sentence Section |
-|-----------------|-----------------|---------------------|
-| ![Drawing](./PicsForRepo/read.jpg) | ![Reading](./PicsForRepo/readingresult.jpg) | ![Math](./PicsForRepo/textToRead.jpg) |
-
-| Setting test | Select children| Confirm sending | Test result |
-|-----------------|-----------------|---------------------|---------------------|
-| ![Drawing](./PicsForRepo/setExam1.jpg) | ![Reading](./PicsForRepo/selectChildren.jpg) | ![Math](./PicsForRepo/setExam.jpg) | ![Math](./PicsForRepo/testRes.jpg)
-
-
-
-| Children Section | Tests Section | ToDo Section |
-|-----------------|-----------------|---------------------|
-| ![Drawing](./PicsForRepo/ChildrenTests.jpg) | ![Reading](./PicsForRepo/tests1.jpg) | ![Math](./PicsForRepo/toDo.jpg) |
-
-| Child profile | Child report Section | Solved tests | Setting |
-|-----------------|-----------------|---------------------|---------------------|
-| ![Drawing](./PicsForRepo/childProf.jpg) | ![Reading](./PicsForRepo/rate1.jpg) | ![Math](./PicsForRepo/solvedTests.jpg) | ![Math](./PicsForRepo/profileMange.jpg)
-|
-
+![Proposal page1](./Pics/1.png)
+![Proposal page1](./Pics/2.png)
+![Proposal page1](./Pics/3.png)
+![Proposal page1](./Pics/4.png)
+![Proposal page1](./Pics/5.png)
+![Proposal page1](./Pics/6.png)
+![Proposal page1](./Pics/7.png)
+![Proposal page1](./Pics/8.png)
+![Proposal page1](./Pics/9.png)
+![Proposal page1](./Pics/10.png)
+![Proposal page1](./Pics/11.png)
 
 ---
 
